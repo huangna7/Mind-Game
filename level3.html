@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Level 3</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="bg-black text-green-400 flex flex-col items-center justify-center h-screen font-mono">
+
+    <h1 id="title" class="mb-4">> initializing...</h1>
+
+    <!-- BAR -->
+    <div class="w-100 h-3 bg-gray-800 rounded overflow-hidden border-2 border-double">
+        <div id="bar" class="h-full bg-green-600 w-0 transition-all duration-200"></div>
+    </div>
+
+    <p id="percent" class="mt-2">0%</p>
+
+    <p id="info" class="mt-4 text-sm"></p>
+
+    <input id="input" class="mt-2 px-2 py-1 outline-none text-green-400 hidden w-30" autofocus>
+
+    <script>
+        let progress = 0;
+        let jawaban = "32"; // jawaban puzzle
+
+        let bar = document.getElementById("bar");
+        let percent = document.getElementById("percent");
+        let info = document.getElementById("info");
+        let input = document.getElementById("input");
+        let title = document.getElementById("title");
+
+        // update bar
+        function update() {
+            bar.style.width = progress + "%";
+            percent.innerText = progress + "%";
+        }
+
+        // loading
+        let load = setInterval(() => {
+            if (progress < 90) {
+                progress++;
+                update();
+            } else {
+                clearInterval(load);
+                mulaiPuzzle();
+            }
+        }, 40);
+
+        // tampilkan puzzle
+        function mulaiPuzzle() {
+            title.innerText = "> SYSTEM LOCKED";
+            info.innerHTML = `
+                > solve this:<br>
+                > 2 + 2 = 8<br>
+                > 3 + 3 = 18<br>
+                > 4 + 4 = ?<br>
+                >
+                `;
+            input.classList.remove("hidden");
+        }
+
+        // cek jawaban
+        input.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+
+                info.innerText = "> checking...";
+
+                setTimeout(() => {
+                    if (input.value === jawaban) {
+                        progress = 100;
+                        update();
+                        title.innerText = "> ACCESS GRANTED";
+                        info.innerText = "> system unlocked";
+                        input.style.display = "none";
+
+                        setTimeout(function() {
+                            location.href = "sphere.html";
+                        }, 1000);
+                    } else {
+                        title.innerText = "> WRONG ANSWER.";
+                        info.innerText = "> try again...";
+
+                        setTimeout(function() {
+                            location.href = "level1.html";
+                        }, 1000);
+                        // input.value = "";
+                    }
+                }, 500);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

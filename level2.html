@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>level 2</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-black text-green-500 font-mono inset-0">
+    <div class="fixed inset-0 pointer-events-none bg-[linear-gradient(rgba(0,255,0,0.1)_1px,transparent_1px)] bg-[size:100%_4px]"></div>
+    <div class="flex justify-between p-20">
+        <div>
+            <h1 class="text-4xl">Terminal</h1>
+            <br>
+
+            <div id="terminal" class="whitespace-pre-line mb-4"></div>
+
+            <span>> </span>
+            <input id="typing" class="outline-none w-50" autofocus>
+        </div>
+        <div>
+            <div class="border-2 border-dashed border-green-400 w-50 h-50 p-5 m-5 animate-pulse">
+                <h2 class="text-lg">Basic commands: </h2><br>
+                <p>help</p>
+                <p>access</p>
+                <p>clear</p>
+                <p>login</p>
+            </div>
+            <div class="border-2 border-dashed border-green-400 w-100 h-30 p-5 hover:animate-pulse">
+                <h2 class="text-lg">Mission: </h2>
+                <p>Gain Access to the System</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const term = document.getElementById('terminal');
+        const ketik = document.getElementById('typing');
+
+        //typing effect
+        function type(text, i) {
+            if (i === undefined) i = 0;
+
+            if (i < text.length) {
+                term.innerHTML += text[i];
+                
+                setTimeout(function() {
+                type(text, i + 1);
+                }, 15);
+
+            } else {
+                term.innerHTML += "\n";
+            }
+        }
+
+        let texts = [
+            "> booting system...",
+            "> loading kernel...",
+            "> connecting to secure server...",
+            "> bypassing firewall...",
+            "> decrypting data...",
+            "> access level: unknown",
+            "> authentication required..."
+        ];
+
+        for (let i = 0; i < texts.length; i++) {
+            setTimeout(function() {
+                type(texts[i]);
+            }, i * 600);
+        }
+
+        var step = 0;
+        ketik.addEventListener('keydown', function(e) {
+
+            if (e.key === 'Enter') {
+
+                var isi = ketik.value;
+
+                // tampilkan input
+                term.innerHTML += "> " + isi + "\n";
+
+                // command
+                if (isi === "help") {
+                    term.innerHTML += "processing...\n";
+                    term.innerHTML += "Pay attention to the order.\n";
+                
+                } else if (isi === "login" && step === 0) {
+                    term.innerHTML += "processing...\n";
+                    term.innerHTML += "username accepted. \n";
+                    step = 1; 
+
+                } else if (isi === "access" && step === 1) {
+                    term.innerHTML += "access granted ✔\n";
+                    term.innerHTML += "processing... \n";
+                    term.innerHTML += "success \n";
+
+                    setTimeout(function() {
+                        location.href = "level3.html";
+                    }, 1000);
+
+                } else if (isi === "clear") {
+                    term.innerHTML = "";
+
+                } else {
+                    term.innerHTML += "processing...\n";
+                    term.innerHTML += "access denied.\n";
+                }
+
+                ketik.value = "";
+            }
+
+        });
+
+
+    </script>
+    
+</body>
+</html>

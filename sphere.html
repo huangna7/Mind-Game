@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Code Sphere</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <style>
+    .sphere {
+      transform-style: preserve-3d;
+    }
+
+    .item {
+      position: absolute;
+      top: 30%;
+      left: 40%;
+    }
+  </style>
+</head>
+
+<body class="bg-black flex items-center justify-center h-screen overflow-hidden">
+
+  <div>
+    <h1 class="text-5xl text-green-500 font-mono pb-20 font-semibold">Unsolved Game</h1>
+    <br>
+
+    <div class="w-[400px] h-[300px] perspective-[1000px]">
+      <div id="sphere" class="sphere w-full h-full relative"></div>
+    </div>
+
+    <a href="level1.html">
+      <button type="button"
+        class="bg-green-300 shadow-xl shadow-green-500 hover:bg-white rounded-md text-black font-mono text-lg w-95 p-2">START</button>
+    </a>
+  </div>
+
+
+  <script>
+    // =======================
+    // 1. AMBIL ELEMENT
+    // =======================
+    const sphere = document.getElementById("sphere");
+
+    // =======================
+    // 2. DATA KODE
+    // =======================
+    const codes = [
+      "<div>", "</div>", "body{}", "color:red;",
+      "function()", "return;", "let x=10;",
+      "console.log()", "if(x>0)", "else{}",
+      "$var", "echo", "<?php ?>", "<html>",
+      "<script>", "margin:0;", "padding:0;",
+      "text-emerald", "bg-yellow",
+      "<p>"
+    ];
+
+    // =======================
+    // 3. PERBANYAK ITEM
+    // =======================
+    let allCodes = [];
+    for (let i = 0; i < 3; i++) {
+      allCodes = allCodes.concat(codes);
+    }
+
+    // =======================
+    // 4. BUAT ELEMENT
+    // =======================
+    allCodes.forEach(function (text) {
+      const el = document.createElement("div");
+      el.innerText = text;
+      el.className = "item text-xs text-green-500 font-mono";
+      sphere.appendChild(el);
+    });
+
+    // =======================
+    // 5. AMBIL SEMUA ITEM
+    // =======================
+    const items = document.querySelectorAll(".item");
+
+    const radius = 150;
+    const total = items.length;
+
+    // =======================
+    // 6. POSISI BULAT (FIBONACCI SIMPLE)
+    // =======================
+    items.forEach(function (el, i) {
+
+      // hitung posisi vertikal (-1 sampai 1)
+      const y = 1 - (i / (total - 1)) * 2;
+
+      // hitung radius lingkaran di posisi itu
+      const r = Math.sqrt(1 - y * y);
+
+      // sudut putar (pakai angka tetap biar merata)
+      const angle = i * 137.5; // golden angle
+
+      const x = Math.cos(angle * Math.PI / 180) * r;
+      const z = Math.sin(angle * Math.PI / 180) * r;
+
+      el.style.transform =
+        "translate3d(" +
+        (x * radius) + "px," +
+        (y * radius) + "px," +
+        (z * radius) + "px)";
+    });
+
+    // =======================
+    // 7. DRAG ROTATE
+    // =======================
+    let isDrag = false;
+    let startX, startY;
+    let rotX = 0, rotY = 0;
+
+    document.addEventListener("mousedown", function (e) {
+      isDrag = true;
+      startX = e.clientX;
+      startY = e.clientY;
+    });
+
+    document.addEventListener("mousemove", function (e) {
+      if (!isDrag) return;
+
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+
+      rotY += dx * 0.3;
+      rotX -= dy * 0.3;
+
+      sphere.style.transform =
+        "rotateX(" + rotX + "deg) rotateY(" + rotY + "deg)";
+
+      startX = e.clientX;
+      startY = e.clientY;
+    });
+
+    document.addEventListener("mouseup", function () {
+      isDrag = false;
+    });
+  </script>
+
+</body>
+
+</html>

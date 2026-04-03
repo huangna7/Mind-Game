@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <title>Level 1</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+        .locked * {
+        pointer-events: none; /* semua elemen tidak bisa diklik */
+        }
+
+        .locked #next {
+        pointer-events: auto; /* kecuali tombol next */
+        }
+    </style>
+</head>
+<body class="bg-black text-green-500 flex justify-center gap-3">
+    <div class="my-20">
+        <p class="text-green-400 font-mono text-2xl mb-3">Password</p>
+
+        <div class="border-2 rounded-lg border-orange-500 p-10 py-20">
+            <h1 class="text-7xl text-green-400 font-mono">Ɐccԍƨƨ Ҽʁɑuϝԍq</h1>
+            <!-- Иoϝ ɻonuq = not found --> 
+        </div>
+
+        <br>
+        
+        <input type="text" id="password" name="password" class="border-2 rounded-lg border-orange-500 p-2 mr-3" placeholder="Input the password...">
+        
+        <button id="btnEnter" type="submit" onclick="enter()" class="border-double border-2 rounded-lg px-5 font-mono">Enter</button>
+
+        <!-- hasil -->
+        <p class="font-mono hidden" id="hasil"></p>
+
+        <div id="lockScreen" class="fixed inset-0 bg-black bg-opacity-50 hidden"></div>
+
+        <!-- linkeu -->
+        <br>
+        <a href="level2.html">
+            <button id="next" class="bg-black shadow-xl shadow-green-300 hover:bg-emerald-900 rounded-md text-green-300 font-mono text-lg w-95 p-2 hidden">Next Level</button>
+        </a>
+    </div>
+
+    <button type="button" onclick="hint()">
+        <img src="hinteu.png" alt="hinteu" class="w-10 h-10">
+    </button>
+
+    <script>
+        function hint() {
+            alert('Try seeing things differently...👁️')
+        }
+
+        const btn = document.getElementById('btnEnter');
+
+            function kabur() {
+                // ambil ukuran layar
+                const maxX = window.innerWidth - btn.offsetWidth;
+                const maxY = window.innerHeight - btn.offsetHeight;
+
+                // posisi random jauh
+                const x = Math.random() * maxX;
+                const y = Math.random() * maxY;
+
+                btn.style.position = 'fixed';
+                btn.style.left = x + 'px';
+                btn.style.top = y + 'px';
+
+            }
+
+            // pasang event
+            btn.addEventListener('mouseenter', kabur);
+
+            // stop setelah 10 detik
+            setTimeout(() => {
+                btn.removeEventListener('mouseenter', kabur);
+            }, 10000);
+
+            // 🔥 HIDUP LAGI SAAT DIKLIK
+            btn.addEventListener('click', () => {
+                btn.addEventListener('mouseenter', kabur);
+
+                // optional: matikan lagi setelah 5 detik
+                setTimeout(() => {
+                    btn.removeEventListener('mouseenter', kabur);
+                }, 5000);
+            });
+
+
+        function enter() {
+            const password = document.getElementById('password').value
+
+            document.getElementById('hasil').classList.remove('hidden');
+            if (password == 'Access Granted') {
+                document.getElementById('hasil').textContent = 'Password correct!';
+                document.getElementById('hasil').className = 'ml-2 text-green-400 text-sm';
+
+                document.getElementById('next').classList.remove('hidden');
+
+                // AKTIFKAN MODE LOCK
+                document.body.classList.add('locked');
+            }else{
+                document.getElementById('hasil').textContent = 'Password incorrect!';
+                document.getElementById('hasil').className = 'ml-2 text-red-500 text-sm';
+            }
+
+        }
+    </script>
+</body>
+</html>
